@@ -1,16 +1,39 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  // import.meta.dirname is available after Node.js v20.11.0
+  baseDirectory: import.meta.dirname,
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.config({
+    extends: [
+      "next",
+      "next/core-web-vitals",
+      "next/typescript",
+      "plugin:prettier/recommended",
+    ],
+    plugins: ["prettier", "import"],
+    rules: {
+      "import/order": [
+        "error",
+        {
+          groups: [
+            ["builtin", "external"], // Node.js and third-party packages
+            ["internal"], // Internal aliases
+            ["parent", "sibling", "index"], // Relative imports
+          ],
+          "newlines-between": "always",
+          alphabetize: { order: "ignore" }, // Disables default alphabetical sorting
+          pathGroups: [
+
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
+        },
+      ],
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  }),
 ];
 
 export default eslintConfig;
