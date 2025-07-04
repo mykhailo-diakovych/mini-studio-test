@@ -4,7 +4,7 @@ import { Decor } from "@/components/layout/decor";
 
 export default function Home() {
    return (
-      <main className="relative z-10 flex justify-center px-4 py-8 lg:py-16">
+      <main className="relative z-10 flex justify-center px-4 pt-28 pb-8 lg:py-16">
          <div className="absolute top-0 right-0 -z-10">
             <Decor />
          </div>
